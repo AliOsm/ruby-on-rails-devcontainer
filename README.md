@@ -124,4 +124,5 @@ To use Firefox in your system tests instead of Chrome, you will need to change `
 - This is just a development setup, make sure to setup these services in your production environment also if you are using them
 - Rebuild your devcontainer image when you change any file inside `.devcontainer` directory
 - Take a look at the installed extensions and modify the list as required
+- This could be used in GitHub Codespaces easily with a single click
 - Feel free to submit any change you feel it is benefitial to this repo :)
