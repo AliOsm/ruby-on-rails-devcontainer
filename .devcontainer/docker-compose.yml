@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+
+    volumes:
+      - ../..:/workspaces:cached
+      - $HOME/.ssh/:/home/vscode/.ssh/
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      # Your config/database.yml should use the user and password you set here,
+      # and host "db" (as that's the name of this service). You can use whatever
+      # database name you want. Use `bin/rails db:prepare` to create the database.
+      #
+      # Example:
+      #
+      #  development:
+      #    <<: *default
+      #    host: db
+      #    username: postgres
+      #    password: postgres
+      #    database: myapp_development
+
+      # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
+      # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    volumes:
+      - redis-data:/var/lib/redis/data
+    ports:
+      - 6379:6379
+
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    restart: unless-stopped
+    volumes:
+      - meilisearch-data:/var/lib/meilisearch/data
+    environment:
+      - http_proxy
+      - https_proxy
+      - MEILI_MASTER_KEY=LOCAL_TEST_KEY
+      - MEILI_ENV=${MEILI_ENV:-development}
+      - MEILI_LOG_LEVEL
+      - MEILI_DB_PATH=${MEILI_DB_PATH:-/data.ms}
+    ports:
+      - 7700:7700
+
+  memcached:
+    image: memcached:latest
+    restart: unless-stopped
+    volumes:
+      - memcached-data:/var/lib/memcached/data
+    ports:
+      - 11211:11211
+
+volumes:
+  postgres-data:
+  redis-data:
+  meilisearch-data:
+  memcached-data:
