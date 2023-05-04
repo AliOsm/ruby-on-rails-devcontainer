@@ -92,7 +92,7 @@ To connect to Redis in the development environment, you need to instantiate the 
 redis = Redis.new(url: ENV['REDIS_URL'] || 'http://redis:6379')
 ```
 
-You should define `REDIS_URL` in your production environment, while in development `http://redis:6379` will be used. This is required because the docker service for Redis is named as `redis` inside `.devcontainer/docket-compose.yml`, and you should access it by its name.
+You should define `REDIS_URL` in your production environment, while in development `redis://redis:6379` will be used. This is required because the docker service for Redis is named as `redis` inside `.devcontainer/docket-compose.yml`, and you should access it by its name.
 
 ### MeiliSearch
 
