@@ -42,7 +42,7 @@
                         "name": "Rails Development Database",
                         "driver": "PostgreSQL",
                         "previewLimit": 50,
-                        "server": "localhost",
+                        "server": "db",
                         "port": 5432,
                         // update this to match config/database.yml
                         "database": "ror_project_development",
@@ -53,7 +53,7 @@
                         "name": "Rails Test Database",
                         "driver": "PostgreSQL",
                         "previewLimit": 50,
-                        "server": "localhost",
+                        "server": "db",
                         "port": 5432,
                         // update this to match config/database.yml
                         "database": "ror_project_test",
