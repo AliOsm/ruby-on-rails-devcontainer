@@ -1,103 +1,157 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ruby-rails-postgres
 {
-    "name": "RoR Project Name",
-    "dockerComposeFile": "docker-compose.yml",
-    "service": "app",
-    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-    "features": {
-        "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-            "packages": "libpq-dev, libvips" // For pg gem
+  "name": "ruby-on-rails",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    "ghcr.io/devcontainers/features/node": {},
+    "ghcr.io/devcontainers/features/docker-in-docker": {},
+    "ghcr.io/rails/devcontainer/features/activestorage": {},
+    "ghcr.io/rails/devcontainer/features/postgres-client": {},
+    "ghcr.io/jungaretti/features/vim": {}
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // This can be used to network with other containers or the host.
+  "forwardPorts": [
+    3000,
+    5432,
+    6379,
+    11211,
+    7700,
+    9610
+  ],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": ".devcontainer/setup.sh",
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "workbench": {
+          "iconTheme": "vscode-icons"
         },
-        "ghcr.io/devcontainers/features/git:1": {
-            "version": "latest"
+        "editor": {
+          "formatOnSave": true,
+          "quickSuggestions": {
+            "strings": "on"
+          }
         },
-        "ghcr.io/devcontainers/features/ruby:1": {
-            "version": "3.2.0" // Change Ruby version as required
+        "files": {
+          "associations": {
+            "*.css": "tailwindcss"
+          }
         },
-        "ghcr.io/devcontainers/features/node:1": {
-            "version": 19 // Change Node version as required
+        "[ruby]": {
+          "editor": {
+            "formatOnType": false,
+            "tabSize": 2,
+            "useTabStops": false,
+            "defaultFormatter": "Shopify.ruby-lsp"
+          }
         },
-        "ghcr.io/devcontainers/features/common-utils:1": {
-            "username": "vscode",
-            "uid": 1000,
-            "gid": 1000,
-            "installZsh": true,
-            "installOhMyZsh": true,
-            "configureZshAsDefaultShell": true,
-            "upgradePackages": true
-        }
-    },
-    "customizations": {
-        "vscode": {
-            // Set *default* container specific settings.json values on container create.
-            "settings": {
-                "workbench.iconTheme": "vscode-icons",
-                "workbench.colorTheme": "GitHub Dark",
-                "emmet.includeLanguages": {
-                    "erb": "html"
-                },
-                "sqltools.connections": [
-                    {
-                        "name": "Rails Development Database",
-                        "driver": "PostgreSQL",
-                        "previewLimit": 50,
-                        "server": "db",
-                        "port": 5432,
-                        // update this to match config/database.yml
-                        "database": "ror_project_development",
-                        "username": "postgres",
-                        "password": "postgres"
-                    },
-                    {
-                        "name": "Rails Test Database",
-                        "driver": "PostgreSQL",
-                        "previewLimit": 50,
-                        "server": "db",
-                        "port": 5432,
-                        // update this to match config/database.yml
-                        "database": "ror_project_test",
-                        "username": "postgres",
-                        "password": "postgres"
-                    }
-                ],
-                "ruby.format": "rubocop",
-                "editor.formatOnSave": true
+        "[erb]": {
+          "editor": {
+            "formatOnSave": false
+          }
+        },
+        "rubyLsp": {
+          "rubyVersionManager": "rbenv",
+          "formatter": "rubocop"
+        },
+        "railsI18n": {
+          "localeFilePattern": "config/locales/**/*.yml",
+          "priorityOfLocales": [
+            "ar"
+          ]
+        },
+        "tailwindCSS": {
+          "includeLanguages": {
+            "plaintext": "html"
+          }
+        },
+        "erb-formatter": {
+          "lineLength": 240,
+          "commandPath": "/home/vscode/.rbenv/versions/3.3.3/bin/erb-formatter"
+        },
+        "erb": {
+          "erb-lint": {
+            "onSave": false
+          }
+        },
+        "emeraldwalk.runonsave": {
+          "commands": [
+            {
+              "match": "\\.erb$",
+              "cmd": "tempfile=$(mktemp);\
+                      cat ${file} > $tempfile;\
+                      rustywind --write $tempfile;\
+                      rustywind --write --custom-regex \"class=\\\"([^\\\"]+)\\\"\" $tempfile;\
+                      rustywind --write --custom-regex \"class:\\s+\\\"([^\\\"]+)\\\"\" $tempfile;\
+                      rustywind --write --custom-regex \"class:\\s+\\'([^\\']+)\\'\" $tempfile;\
+                      erb-formatter --write --print-width 240 $tempfile;\
+                      erblint --autocorrect $tempfile;\
+                      mv $tempfile ${file};"
             },
-            "extensions": [
-                "iliazeus.vscode-ansi",
-                "ms-azuretools.vscode-docker",
-                "manuelpuyol.erb-linter",
-                "waderyan.gitblame",
-                "GitHub.github-vscode-theme",
-                "eamodio.gitlens",
-                "IBM.output-colorizer",
-                "aki77.rails-db-schema",
-                "bung87.rails",
-                "castwide.solargraph",
-                "connorshea.vscode-ruby-test-adapter",
-                "rebornix.Ruby",
-                "mtxr.sqltools-driver-pg",
-                "mtxr.sqltools",
-                "hbenl.vscode-test-explorer",
-                "wingrunr21.vscode-ruby",
-                "LoranKloeze.ruby-rubocop-revived",
-                "bung87.vscode-gemfile",
-                "vscode-icons-team.vscode-icons"
-            ]
-        }
-    },
-    // Use 'forwardPorts' to make a list of ports inside the container available locally.
-    // This can be used to network with other containers or the host.
-    "forwardPorts": [
-        3000,
-        5432,
-        6379,
-        7700,
-        11211
-    ],
-    // Use 'onCreateCommand' to run commands while the container is creating.
-    "onCreateCommand": "gem install solargraph",
-    // Use 'postCreateCommand' to run commands after the container is created.
-    "postCreateCommand": ".devcontainer/setup.sh"
+            {
+              "match": ".*locales.*\\.yml$",
+              "cmd": "i18n-tasks normalize"
+            },
+            {
+              "match": "\\.css$",
+              "cmd": "rustywind --write --custom-regex \"@apply ([_a-zA.-Z0-9-:\\[\\] ]+)( !important)?;\" ${file}"
+            }
+          ]
+        },
+        "livePreview": {
+          "portNumber": 9620
+        },
+        "sqltools.connections": [
+          {
+            "name": "Rails Development Database",
+            "driver": "PostgreSQL",
+            "previewLimit": 50,
+            "server": "db",
+            "port": 5432,
+            // update this to match config/database.yml
+            "database": "baheth_development",
+            "username": "postgres",
+            "password": "postgres"
+          },
+          {
+            "name": "Rails Test Database",
+            "driver": "PostgreSQL",
+            "previewLimit": 50,
+            "server": "db",
+            "port": 5432,
+            // update this to match config/database.yml
+            "database": "baheth_test",
+            "username": "postgres",
+            "password": "postgres"
+          }
+        ]
+      },
+      "extensions": [
+        "Postman.postman-for-vscode",
+        "aki77.rails-db-schema",
+        "aki77.rails-i18n",
+        "aki77.rails-partial",
+        "bradlc.vscode-tailwindcss",
+        "bung87.vscode-gemfile",
+        "eamodio.gitlens",
+        "elia.erb-formatter",
+        "emeraldwalk.RunOnSave",
+        "manuelpuyol.erb-linter",
+        "marcoroth.stimulus-lsp",
+        "ms-vscode.live-server",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "vscode-icons-team.vscode-icons",
+        "waderyan.gitblame"
+      ]
+    }
+  }
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
 }

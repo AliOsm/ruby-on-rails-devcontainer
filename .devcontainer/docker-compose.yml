@@ -13,8 +13,15 @@ services:
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  selenium:
+    image: seleniarm/standalone-chromium
+    restart: unless-stopped
+
   db:
-    image: postgres:latest
+    image: postgres:16
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data
@@ -39,38 +46,32 @@ services:
       # (Adding the "ports" property to this file will not forward from a Codespace.)
 
   redis:
-    image: redis:latest
+    image: redis:7.2.5
     restart: unless-stopped
     volumes:
-      - redis-data:/var/lib/redis/data
+      - redis-data:/data
     ports:
       - 6379:6379
 
-  meilisearch:
-    image: getmeili/meilisearch:latest
-    restart: unless-stopped
-    volumes:
-      - meilisearch-data:/var/lib/meilisearch/data
-    environment:
-      - http_proxy
-      - https_proxy
-      - MEILI_MASTER_KEY=LOCAL_TEST_KEY
-      - MEILI_ENV=${MEILI_ENV:-development}
-      - MEILI_LOG_LEVEL
-      - MEILI_DB_PATH=${MEILI_DB_PATH:-/data.ms}
-    ports:
-      - 7700:7700
-
   memcached:
-    image: memcached:latest
+    image: memcached:1.6.28
     restart: unless-stopped
     volumes:
       - memcached-data:/var/lib/memcached/data
     ports:
       - 11211:11211
 
+  meilisearch:
+    image: getmeili/meilisearch:v1.8.3
+    restart: unless-stopped
+    volumes:
+      - meilisearch-data:/meili_data
+    ports:
+      - 7700:7700
+
 volumes:
   postgres-data:
   redis-data:
-  meilisearch-data:
   memcached-data:
+  meilisearch-data:
+  chroma-data:
