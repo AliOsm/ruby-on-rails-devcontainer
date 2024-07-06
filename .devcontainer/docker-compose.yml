@@ -23,6 +23,7 @@ services:
   db:
     image: postgres:16
     restart: unless-stopped
+    command: postgres -c "pg_stat_statements.track=all" -c "shared_preload_libraries=pg_stat_statements"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:
