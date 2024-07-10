@@ -90,7 +90,7 @@
         "emeraldwalk.runonsave": {
           "commands": [
             {
-              "match": "\\.erb$",
+              "match": "(?<!\\.json)\\.erb$",
               "cmd": "tempfile=$(mktemp);\
                       cat ${file} > $tempfile;\
                       rustywind --write $tempfile;\
