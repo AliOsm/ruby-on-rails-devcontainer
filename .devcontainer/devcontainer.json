@@ -11,7 +11,12 @@
     "ghcr.io/devcontainers/features/docker-in-docker": {},
     "ghcr.io/rails/devcontainer/features/activestorage": {},
     "ghcr.io/rails/devcontainer/features/postgres-client": {},
-    "ghcr.io/jungaretti/features/vim": {}
+    "ghcr.io/jungaretti/features/vim": {},
+    "ghcr.io/devcontainers/features/common-utils:latest": {
+      "installOhMyZsh": false, // For more defailts: https://github.com/devcontainers/features/issues/1035.
+      "installOhMyZshConfig": false,
+      "configureZshAsDefaultShell": true
+    }
   },
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // This can be used to network with other containers or the host.
@@ -45,10 +50,12 @@
         },
         "[ruby]": {
           "editor": {
-            "formatOnType": false,
+            "defaultFormatter": "Shopify.ruby-lsp",
+            "formatOnSave": true,
             "tabSize": 2,
-            "useTabStops": false,
-            "defaultFormatter": "Shopify.ruby-lsp"
+            "insertSpaces": true,
+            "semanticHighlighting.enabled": true,
+            "formatOnType": true
           }
         },
         "[erb]": {
@@ -73,7 +80,7 @@
         },
         "erb-formatter": {
           "lineLength": 240,
-          "commandPath": "/home/vscode/.rbenv/versions/3.3.3/bin/erb-formatter"
+          "commandPath": "/home/vscode/.rbenv/versions/3.3.4/bin/erb-formatter"
         },
         "erb": {
           "erb-lint": {

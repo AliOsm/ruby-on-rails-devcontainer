@@ -75,4 +75,3 @@ volumes:
   redis-data:
   memcached-data:
   meilisearch-data:
-  chroma-data:

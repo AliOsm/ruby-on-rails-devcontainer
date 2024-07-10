@@ -9,7 +9,7 @@ Ruby on Rails DevContainer setup that includes Ruby, Ruby on Rails, Selenium, Po
 ## What are we setting up in this DevContainer?
 
 Softwares:
-- [Ruby](https://www.ruby-lang.org) version `3.3.3`
+- [Ruby](https://www.ruby-lang.org) version `3.3.4`
 - [NodeJS](https://nodejs.org) version `20.15.0` (or later)
 - [Yarn](https://yarnpkg.com) version `1.22.22` (or later)
 - [Zsh](https://www.zsh.org)
