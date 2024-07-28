@@ -25,8 +25,7 @@
     5432,
     6379,
     11211,
-    7700,
-    9610
+    7700
   ],
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": ".devcontainer/setup.sh",
@@ -122,7 +121,7 @@
             "server": "db",
             "port": 5432,
             // update this to match config/database.yml
-            "database": "baheth_development",
+            "database": "ruby_on_rails_development",
             "username": "postgres",
             "password": "postgres"
           },
@@ -133,7 +132,7 @@
             "server": "db",
             "port": 5432,
             // update this to match config/database.yml
-            "database": "baheth_test",
+            "database": "ruby_on_rails_test",
             "username": "postgres",
             "password": "postgres"
           }
